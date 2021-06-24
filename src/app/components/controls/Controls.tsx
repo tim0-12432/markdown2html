@@ -8,13 +8,14 @@ import clsx from "clsx";
 import React, { Fragment, useState } from "react";
 import { options, editings } from "./ControlMapping";
 import ExportDialog from "./dialog/ExportDialog";
-import { exportHtmlFile, exportMarkdownFile } from "../../interactivity/export/export";
+import { exportHtmlFile, exportMarkdownFile, exportStylesheetFile } from "../../interactivity/export/export";
 
 const drawerWidth = 240;
 
 type ControlProps = {
     markdown: string,
     html: string,
+    css: string,
     setMarkdown(value: string): void
 }
 
@@ -93,7 +94,7 @@ const useStyles = makeStyles((theme: Theme) => {
     };
 });
 
-const Controls = ({markdown, html, setMarkdown}: ControlProps) => {
+const Controls = ({markdown, html, css, setMarkdown}: ControlProps) => {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
@@ -125,6 +126,9 @@ const Controls = ({markdown, html, setMarkdown}: ControlProps) => {
                 break;
             case "export-markdown":
                 exportMarkdownFile(markdown);
+                break;
+            case "export-css":
+                exportStylesheetFile(css);
                 break;
             default:
                 console.log(`Command "${command}" not found!`);

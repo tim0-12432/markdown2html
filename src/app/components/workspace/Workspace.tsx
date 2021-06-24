@@ -91,7 +91,7 @@ const Workspace: FC = () => {
 
     return (
         <Fragment>
-            <Controls markdown={ markDown } html={ html } setMarkdown={ onMarkdownChange } />
+            <Controls markdown={ markDown } html={ html } css={ css } setMarkdown={ onMarkdownChange } />
             <main className={ classes.main}>
                 <div className={classes.toolbar} />
                 <div className={ classes.content }>
