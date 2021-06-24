@@ -2,10 +2,11 @@ import { makeStyles, Theme } from "@material-ui/core";
 import {Controlled as CodeMirror} from 'react-codemirror2';
 import React from "react";
 
-require("codemirror/mode/htmlmixed/htmlmixed");
+require("codemirror/mode/gfm/gfm");
 
 type AreaProps = {
-    value: string
+    value: string,
+    onChange(value: string): void
 }
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -17,15 +18,14 @@ const useStyles = makeStyles((theme: Theme) => {
     }
 });
 
-const HtmlArea = (props: AreaProps) => {
+const MarkdownArea = (props: AreaProps) => {
     const classes = useStyles();
 
     const options = {
-        mode: "htmlmixed",
+        mode: "gfm",
         material: "material",
         lineNumbers: true,
-        lineWrapping: true,
-        readonly: true
+        lineWrapping: true
     };
 
     return (
@@ -33,11 +33,15 @@ const HtmlArea = (props: AreaProps) => {
                 <CodeMirror
                     value={ props.value }
                     options={ options }
-                    onBeforeChange={(editor, data, value) => {}}
-                    onChange={(editor, data, value) => {}}
+                    onBeforeChange={(editor, data, value) => {
+                        props.onChange(value);
+                    }}
+                    onChange={(editor, data, value) => {
+                        props.onChange(value);
+                    }}
                 />
             </div>
         );
 };
 
-export default HtmlArea;
+export default MarkdownArea;

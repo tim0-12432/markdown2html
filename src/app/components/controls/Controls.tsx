@@ -1,13 +1,22 @@
-import { AppBar, Divider, Drawer, Fab, IconButton, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme, Toolbar, Typography, useTheme } from "@material-ui/core";
+import { AppBar, Divider, Tooltip, Drawer, Fab, IconButton, List, ListItem, ListItemIcon, ListItemText, makeStyles, Theme, Toolbar, Typography, useTheme } from "@material-ui/core";
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import ShareIcon from '@material-ui/icons/Share';
 import clsx from "clsx";
-import React, { FC, Fragment, useState } from "react";
+import React, { Fragment, useState } from "react";
+import { options, editings } from "./ControlMapping";
+import ExportDialog from "./dialog/ExportDialog";
+import { exportHtmlFile, exportMarkdownFile } from "../../interactivity/export/export";
 
 const drawerWidth = 240;
+
+type ControlProps = {
+    markdown: string,
+    html: string,
+    setMarkdown(value: string): void
+}
 
 const useStyles = makeStyles((theme: Theme) => {
     return {
@@ -84,10 +93,11 @@ const useStyles = makeStyles((theme: Theme) => {
     };
 });
 
-const Controls: FC = () => {
+const Controls = ({markdown, html, setMarkdown}: ControlProps) => {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
+    const [exportDialogOpen, setExportDialogOpen] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -96,6 +106,35 @@ const Controls: FC = () => {
     const handleDrawerClose = () => {
         setOpen(false);
     };
+
+    const optionFunc = (func: ((text: string, cursorIndex: number) => string) | undefined) => {
+        func ? setMarkdown(func(markdown, -1) || markdown) : console.log("Function option is undefined!");
+    };
+
+    const editingFunc = (command: (string) | undefined) => {
+        command ? callCommand(command) : console.log("Function editing is undefined!");
+    };
+
+    const callCommand = (command: string) => {
+        switch (command) {
+            case "export":
+                setExportDialogOpen(!exportDialogOpen);
+                break;
+            case "export-html":
+                exportHtmlFile(html);
+                break;
+            case "export-markdown":
+                exportMarkdownFile(markdown);
+                break;
+            default:
+                console.log(`Command "${command}" not found!`);
+                break;
+        }
+    };
+
+    function toggleExportDialog() {
+        setExportDialogOpen(!exportDialogOpen);
+    }
 
     return (
         <Fragment>
@@ -136,37 +175,46 @@ const Controls: FC = () => {
                 }}
             >
                 <div className={classes.toolbar}>
-                <IconButton onClick={handleDrawerClose}>
-                    {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-                </IconButton>
+                    <IconButton onClick={handleDrawerClose}>
+                        {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+                    </IconButton>
                 </div>
                 <Divider />
                 <List>
-                {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                    <ListItem button key={text}>
-                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                    <ListItemText primary={text} />
-                    </ListItem>
-                ))}
+                {
+                    options.map((item) => (
+                        <ListItem button key={item.text} onClick={() => optionFunc(item.func)}>
+                        <ListItemIcon>{item.icon}</ListItemIcon>
+                        <ListItemText primary={item.text} />
+                        </ListItem>
+                    ))
+                }
                 </List>
                 <Divider />
                 <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem button key={text}>
-                    <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                    <ListItemText primary={text} />
-                    </ListItem>
-                ))}
+                {
+                    editings.map((item) => (
+                        <ListItem button key={item.text} onClick={() => editingFunc(item.command)}>
+                        <ListItemIcon>{item.icon}</ListItemIcon>
+                        <ListItemText primary={item.text} />
+                        </ListItem>
+                    ))
+                }
                 </List>
             </Drawer>
             <div className={ classes.fabGroup }>
-                <Fab className={ classes.fab }>
-                    <InboxIcon />
-                </Fab>
-                <Fab className={ classes.fab }>
-                    <MailIcon />
-                </Fab>
+                <Tooltip title="Save HTML" placement="left">
+                    <Fab className={ classes.fab } onClick={() => callCommand("export-html")}>
+                        <InboxIcon />
+                    </Fab>
+                </Tooltip>
+                <Tooltip title="Share" placement="left">
+                    <Fab className={ classes.fab }>
+                        <ShareIcon />
+                    </Fab>
+                </Tooltip>
             </div>
+            <ExportDialog open={ exportDialogOpen } toggle={ toggleExportDialog } call={ callCommand } />
         </Fragment>
     );
 };

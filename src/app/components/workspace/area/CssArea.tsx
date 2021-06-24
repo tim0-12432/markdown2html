@@ -2,7 +2,7 @@ import { makeStyles, Theme } from "@material-ui/core";
 import {Controlled as CodeMirror} from 'react-codemirror2';
 import React from "react";
 
-require("codemirror/mode/htmlmixed/htmlmixed");
+require("codemirror/mode/css/css");
 
 type AreaProps = {
     value: string
@@ -17,11 +17,11 @@ const useStyles = makeStyles((theme: Theme) => {
     }
 });
 
-const HtmlArea = (props: AreaProps) => {
+const CssArea = (props: AreaProps) => {
     const classes = useStyles();
 
     const options = {
-        mode: "htmlmixed",
+        mode: "css",
         material: "material",
         lineNumbers: true,
         lineWrapping: true,
@@ -40,4 +40,4 @@ const HtmlArea = (props: AreaProps) => {
         );
 };
 
-export default HtmlArea;
+export default CssArea;
