@@ -83,6 +83,7 @@ export const editings: Control = [
     },
     {
         text: "CSS",
-        icon: <StyleIcon />
+        icon: <StyleIcon />,
+        command: "edit-css"
     }
 ];

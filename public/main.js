@@ -9,6 +9,7 @@ function createWindow() {
     const win = new BrowserWindow({
         width: 1080,
         height: 720,
+        icon: path.join(__dirname, "/images/favicon.ico"),
         webPreferences: {
             contextIsolation: false,
             enableRemoteModule: true,
@@ -18,8 +19,8 @@ function createWindow() {
 
     win.loadURL(
         isDev
-          ? 'http://localhost:3000'
-          : `file://${path.join(__dirname, '../build/index.html')}`
+          ? "http://localhost:3000"
+          : `file://${path.join(__dirname, "../build/index.html")}`
     );
 }
 

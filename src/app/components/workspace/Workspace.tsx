@@ -76,6 +76,10 @@ const Workspace: FC = () => {
         setMarkDown(value);
     };
 
+    const onCssChange = (value: string): void => {
+        setCss(value);
+    };
+
     const factory = (node: TabNode) => {
         const component = node.getComponent();
         if (component === "markdown") {
@@ -85,13 +89,18 @@ const Workspace: FC = () => {
         } else if (component === "preview") {
             return <PreviewArea value={ html } />;
         } else if (component === "css") {
-            return <CssArea value={ html } />;
+            return <CssArea value={ css } />;
         }
     };
 
     return (
         <Fragment>
-            <Controls markdown={ markDown } html={ html } css={ css } setMarkdown={ onMarkdownChange } />
+            <Controls markdown={ markDown }
+                html={ html }
+                css={ css }
+                setMarkdown={ onMarkdownChange }
+                setCss={ onCssChange }
+            />
             <main className={ classes.main}>
                 <div className={classes.toolbar} />
                 <div className={ classes.content }>

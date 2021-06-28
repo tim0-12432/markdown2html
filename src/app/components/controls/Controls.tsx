@@ -8,6 +8,7 @@ import clsx from "clsx";
 import React, { Fragment, useState } from "react";
 import { options, editings } from "./ControlMapping";
 import ExportDialog from "./dialog/ExportDialog";
+import CssDialog from "./dialog/CssDialog";
 import { exportHtmlFile, exportMarkdownFile, exportStylesheetFile } from "../../interactivity/export/export";
 
 const drawerWidth = 240;
@@ -16,7 +17,8 @@ type ControlProps = {
     markdown: string,
     html: string,
     css: string,
-    setMarkdown(value: string): void
+    setMarkdown(value: string): void,
+    setCss(value: string): void
 }
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -94,11 +96,12 @@ const useStyles = makeStyles((theme: Theme) => {
     };
 });
 
-const Controls = ({markdown, html, css, setMarkdown}: ControlProps) => {
+const Controls = ({markdown, html, css, setMarkdown, setCss}: ControlProps) => {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = useState(false);
     const [exportDialogOpen, setExportDialogOpen] = useState(false);
+    const [cssDialogOpen, setCssDialogOpen] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -118,6 +121,9 @@ const Controls = ({markdown, html, css, setMarkdown}: ControlProps) => {
 
     const callCommand = (command: string) => {
         switch (command) {
+            case "edit-css":
+                setCssDialogOpen(!cssDialogOpen);
+                break;
             case "export":
                 setExportDialogOpen(!exportDialogOpen);
                 break;
@@ -138,6 +144,10 @@ const Controls = ({markdown, html, css, setMarkdown}: ControlProps) => {
 
     function toggleExportDialog() {
         setExportDialogOpen(!exportDialogOpen);
+    }
+
+    function toggleCssDialog() {
+        setCssDialogOpen(!cssDialogOpen);
     }
 
     return (
@@ -219,6 +229,13 @@ const Controls = ({markdown, html, css, setMarkdown}: ControlProps) => {
                 </Tooltip>
             </div>
             <ExportDialog open={ exportDialogOpen } toggle={ toggleExportDialog } call={ callCommand } />
+            <CssDialog
+                open={ cssDialogOpen }
+                toggle={ toggleCssDialog }
+                call={ callCommand }
+                css={ css }
+                setCss={ setCss }
+            />
         </Fragment>
     );
 };
