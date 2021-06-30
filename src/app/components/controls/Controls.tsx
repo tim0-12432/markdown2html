@@ -10,15 +10,18 @@ import { options, editings } from "./ControlMapping";
 import ExportDialog from "./dialog/ExportDialog";
 import CssDialog from "./dialog/CssDialog";
 import { exportHtmlFile, exportMarkdownFile, exportStylesheetFile } from "../../interactivity/export/export";
+import { cssType } from "../../resources/css";
+import encodeCss from "../../interactivity/conversion/cssify";
+import ShareDialog from "./dialog/ShareDialog";
 
 const drawerWidth = 240;
 
 type ControlProps = {
     markdown: string,
     html: string,
-    css: string,
+    css: cssType,
     setMarkdown(value: string): void,
-    setCss(value: string): void
+    setCss(type: string, prop: string, value: string): void
 }
 
 const useStyles = makeStyles((theme: Theme) => {
@@ -102,11 +105,12 @@ const Controls = ({markdown, html, css, setMarkdown, setCss}: ControlProps) => {
     const [open, setOpen] = useState(false);
     const [exportDialogOpen, setExportDialogOpen] = useState(false);
     const [cssDialogOpen, setCssDialogOpen] = useState(false);
+    const [shareDialogOpen, setShareDialogOpen] = useState(false);
 
     const handleDrawerOpen = () => {
         setOpen(true);
     };
-    
+
     const handleDrawerClose = () => {
         setOpen(false);
     };
@@ -134,7 +138,7 @@ const Controls = ({markdown, html, css, setMarkdown, setCss}: ControlProps) => {
                 exportMarkdownFile(markdown);
                 break;
             case "export-css":
-                exportStylesheetFile(css);
+                exportStylesheetFile(encodeCss(css));
                 break;
             default:
                 console.log(`Command "${command}" not found!`);
@@ -148,6 +152,10 @@ const Controls = ({markdown, html, css, setMarkdown, setCss}: ControlProps) => {
 
     function toggleCssDialog() {
         setCssDialogOpen(!cssDialogOpen);
+    }
+
+    function toggleShareDialog() {
+        setShareDialogOpen(!shareDialogOpen);
     }
 
     return (
@@ -223,7 +231,7 @@ const Controls = ({markdown, html, css, setMarkdown, setCss}: ControlProps) => {
                     </Fab>
                 </Tooltip>
                 <Tooltip title="Share" placement="left">
-                    <Fab className={ classes.fab }>
+                    <Fab className={ classes.fab }  onClick={ toggleShareDialog }>
                         <ShareIcon />
                     </Fab>
                 </Tooltip>
@@ -235,6 +243,13 @@ const Controls = ({markdown, html, css, setMarkdown, setCss}: ControlProps) => {
                 call={ callCommand }
                 css={ css }
                 setCss={ setCss }
+            />
+            <ShareDialog
+                open={ shareDialogOpen }
+                toggle={ toggleShareDialog }
+                html={ html }
+                markdown={ markdown }
+                css={ css }
             />
         </Fragment>
     );

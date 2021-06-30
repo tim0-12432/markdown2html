@@ -13,6 +13,8 @@ import "codemirror/lib/codemirror.css";
 import "codemirror/theme/material.css";
 import "./area/custom-codemirror.css";
 import CssArea from "./area/CssArea";
+import { cssProperties, cssType } from "../../resources/css";
+import encodeCss from "../../interactivity/conversion/cssify";
 
 const useStyles = makeStyles((theme: Theme) => {
     return {
@@ -50,7 +52,7 @@ const Workspace: FC = () => {
     const classes = useStyles();
     const [markDown, setMarkDown] = useState("");
     const [html, setHtml] = useState("");
-    const [css, setCss] = useState("");
+    const [cssProps, setCssProps] = useState<cssType>(cssProperties);
 
     marked.setOptions({
         renderer: new marked.Renderer(),
@@ -76,8 +78,21 @@ const Workspace: FC = () => {
         setMarkDown(value);
     };
 
-    const onCssChange = (value: string): void => {
-        setCss(value);
+    const onCssChange = (value: cssType): void => {
+        setCssProps(value);
+    };
+
+    const setCssProp = (type: string, prop: string, value: string) => {
+        setCssProps({
+            ...cssProps,
+            [type]: {
+                ...cssProps[type],
+                "props": {
+                    ...cssProps[type].props,
+                    [prop]: value
+                }
+            }
+        });
     };
 
     const factory = (node: TabNode) => {
@@ -89,7 +104,7 @@ const Workspace: FC = () => {
         } else if (component === "preview") {
             return <PreviewArea value={ html } />;
         } else if (component === "css") {
-            return <CssArea value={ css } />;
+            return <CssArea value={ encodeCss(cssProps) } />;
         }
     };
 
@@ -97,9 +112,9 @@ const Workspace: FC = () => {
         <Fragment>
             <Controls markdown={ markDown }
                 html={ html }
-                css={ css }
+                css={ cssProps }
                 setMarkdown={ onMarkdownChange }
-                setCss={ onCssChange }
+                setCss={ setCssProp }
             />
             <main className={ classes.main}>
                 <div className={classes.toolbar} />
