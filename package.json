@@ -78,7 +78,7 @@
     "productName": "Markdown2Html",
     "copyright": "Copyright © 2021 ${author}",
     "mac": {
-      "icon": "./public/images/apple-touch-icon.png",
+      "icon": "./public/images/android-chrome-512x512.png",
       "category": "public.app-category.utilities"
     },
     "win": {
