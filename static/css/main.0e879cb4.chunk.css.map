@@ -1,0 +1,1 @@
+{"version":3,"sources":["webpack://src/app/components/workspace/area/custom-codemirror.css"],"names":[],"mappings":"AAAA,mBACI,WACJ,CACA,YACI,cACJ","file":"main.0e879cb4.chunk.css","sourcesContent":[".react-codemirror2 {\n    height: 100%;\n}\n.CodeMirror {\n    height: inherit;\n}"]}
