@@ -18,6 +18,7 @@
 ## Known Issues
 
 - Css menu does not show values changed before :(
+- css is not shown in preview yet!!
 
 ## Features planned
 
