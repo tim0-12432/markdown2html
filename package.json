@@ -77,12 +77,29 @@
     "appId": "com.tim0-12432.markdown2html",
     "productName": "Markdown2Html",
     "copyright": "Copyright © 2021 ${author}",
+    "extends": null,
+    "publish": {
+      "provider": "github",
+      "repo": "html2markdown",
+      "owner": "tim0-12432",
+      "releaseType": "release"
+    },
     "mac": {
       "icon": "./public/images/android-chrome-512x512.png",
-      "category": "public.app-category.utilities"
+      "category": "public.app-category.utilities",
+      "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+      "hardenedRuntime": true
     },
     "win": {
+      "target": "nsis",
+      "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
       "icon": "./public/images/android-chrome-512x512.png"
+    },
+    "linux": {
+      "target": "AppImage",
+      "artifactName": "${productName}-${version}-${os}-${arch}.${ext}",
+      "icon": "icons/icon.png",
+      "category": "Development"
     },
     "files": [
       "./build/**/*",
