@@ -4,8 +4,8 @@
 
 ## Installation
 
-- [Download](https://github.com/tim0-12432/markdown2html/releases) the setup file for your system
-- Execute the setup file and the program will be installed!
+1. [Download](https://github.com/tim0-12432/markdown2html/releases) the setup file for your system
+2. Execute the setup file and the program will be installed!
 
 ## Usage
 
@@ -18,7 +18,7 @@
 ## Known Issues
 
 - Css menu does not show values changed before :(
-- css is not shown in preview yet!!
+- Css is not shown in preview yet!!
 
 ## Features planned
 
