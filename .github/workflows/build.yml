@@ -25,6 +25,33 @@ jobs:
       - name: lint code
         run: npm run lint || true
 
+  deploy:
+    name: GH pages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: git checkout master
+        uses: actions/checkout@v2
+
+      - name: install node and npm
+        uses: actions/setup-node@v2
+        with:
+          node-version: 15.x
+
+      - name: install dependencies
+        run: npm ci
+
+      - name: build
+        run: npm run build
+        env:
+          CI: false
+
+      - name: deploy
+        uses: JamesIves/github-pages-deploy-action@4.1.1
+        with:
+          branch: built-page
+          folder: build
+
   build:
     name: Build
     runs-on: ${{ matrix.os }}
