@@ -1,16 +1,13 @@
-name: Build/release
+name: Build
 
 on:
   push:
     branches: [master]
 
 jobs:
-  release:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [macos-latest, ubuntu-latest, windows-latest]
+  lint:
+    name: Linting
+    runs-on: ubuntu-latest
 
     steps:
       - name: git checkout master
@@ -25,7 +22,24 @@ jobs:
         run: npm ci
 
       - name: lint code
-        run: npm run lint
+        run: npm run lint || true
+
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest, windows-latest]
+
+    steps:
+      - name: git checkout master
+        uses: actions/checkout@v2
+
+      - name: install node and npm
+        uses: actions/setup-node@v2
+        with:
+          node-version: 15.x
 
       - name: build and release
         uses: samuelmeuli/action-electron-builder@v1.6.0
