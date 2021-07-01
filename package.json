@@ -1,6 +1,6 @@
 {
   "name": "markdown2html",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "author": "tim0-12432",
   "main": "public/main.js",
@@ -81,7 +81,7 @@
     "extends": null,
     "publish": {
       "provider": "github",
-      "repo": "html2markdown",
+      "repo": "markdown2html",
       "owner": "tim0-12432",
       "releaseType": "release"
     },
