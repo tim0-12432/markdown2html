@@ -1,4 +1,4 @@
-import React, { JSX } from "react";
+import React from "react";
 import ViewHeadlineIcon from "@material-ui/icons/ViewHeadline";
 import LinkIcon from "@material-ui/icons/Link";
 import ImageIcon from "@material-ui/icons/Image";
