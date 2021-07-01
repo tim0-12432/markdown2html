@@ -7,24 +7,24 @@ type AreaProps = {
 }
 
 const useStyles = makeStyles((theme: Theme) => {
-    return {
-        area: {
-            height: "100%",
-            overflow: "hidden"
-        }
-    }
+	return {
+		area: {
+			height: "100%",
+			overflow: "hidden"
+		}
+	};
 });
 
 const PreviewArea = (props: AreaProps) => {
-    const classes = useStyles();
+	const classes = useStyles();
 
-    return (
-            <div className={ classes.area }>
-                {
-                    Parser(props.value)
-                }
-            </div>
-        );
+	return (
+		<div className={ classes.area }>
+			{
+				Parser(props.value)
+			}
+		</div>
+	);
 };
 
 export default PreviewArea;
