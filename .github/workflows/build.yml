@@ -21,6 +21,9 @@ jobs:
         with:
           node-version: 15.x
 
+      - name: install dependencies
+        run: npm ci
+
       - name: lint code
         run: npm run lint
 
